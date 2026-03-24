@@ -1,0 +1,366 @@
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f7f6f3;
+  --surface:   #ffffff;
+  --border:    #e2e0da;
+  --text:      #1a1916;
+  --muted:     #8a8780;
+  --accent:    #1a1916;
+  --danger:    #c0392b;
+  --success:   #27ae60;
+  --key-bg:    #efefed;
+  --key-hover: #e0dfd9;
+  --radius:    10px;
+  --mono:      'DM Mono', monospace;
+  --sans:      'DM Sans', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Screens ──────────────────────────────────────────────── */
+.screen {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.25s ease;
+}
+.screen.active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Center Card (Start / Result) ─────────────────────────── */
+.center-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 52px 48px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-mark {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+h1 {
+  font-family: var(--mono);
+  font-size: 2.2rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 300;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px 28px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn-primary:hover  { opacity: 0.85; }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 11px 28px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-ghost:hover { background: var(--key-bg); color: var(--text); }
+
+/* ── Game Layout ──────────────────────────────────────────── */
+.game-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  width: 100%;
+  max-width: 860px;
+  padding: 40px 24px;
+  align-items: start;
+}
+
+/* ── Gallows ──────────────────────────────────────────────── */
+.gallows-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#hangman-svg {
+  width: 100%;
+  max-width: 200px;
+}
+
+.svg-line {
+  stroke: var(--text);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.structure { stroke: var(--border); stroke-width: 2; }
+
+.svg-part {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.svg-part.visible { opacity: 1; }
+
+.attempts-label {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* ── Word Panel ───────────────────────────────────────────── */
+.word-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 8px;
+}
+
+.wrong-letters {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--danger);
+  letter-spacing: 0.12em;
+  min-height: 1.2em;
+}
+
+.word-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.word-letter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.word-letter span {
+  font-family: var(--mono);
+  font-size: 1.8rem;
+  font-weight: 500;
+  min-width: 28px;
+  text-align: center;
+  letter-spacing: -0.02em;
+  transition: opacity 0.2s;
+}
+
+.word-letter span.revealed {
+  animation: pop 0.2s ease;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.8); }
+  60%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.word-letter::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* ── Keyboard ─────────────────────────────────────────────── */
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-width: 440px;
+}
+
+.key {
+  width: 42px;
+  height: 42px;
+  background: var(--key-bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.08s, opacity 0.15s;
+  color: var(--text);
+}
+.key:hover:not(:disabled) { background: var(--key-hover); transform: translateY(-1px); }
+.key:active:not(:disabled){ transform: translateY(0); }
+
+.key:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+.key.correct  { background: #d4edda; border-color: #a3d9b0; color: #1a5c2e; opacity: 1; }
+.key.wrong    { background: #fde8e6; border-color: #f5b7b1; color: #922b21; opacity: 1; }
+
+/* ── Message area ─────────────────────────────────────────── */
+.msg-area {
+  font-size: 0.88rem;
+  color: var(--danger);
+  font-family: var(--mono);
+}
+.msg-area.hidden { display: none; }
+
+/* ── Result Screen ────────────────────────────────────────── */
+.result-icon   { font-size: 2.5rem; line-height: 1; }
+.result-word   { font-family: var(--mono); font-size: 1.1rem; color: var(--muted); }
+
+.score-badge {
+  background: var(--key-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 24px;
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.score-badge.hidden { display: none; }
+
+.save-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.save-form.hidden { display: none; }
+
+.save-form input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.save-form input:focus { border-color: var(--accent); }
+
+.save-confirmation {
+  font-size: 0.9rem;
+  color: var(--success);
+  font-family: var(--mono);
+}
+.save-confirmation.hidden { display: none; }
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* ── Leaderboard ──────────────────────────────────────────── */
+.board-layout {
+  width: 100%;
+  max-width: 520px;
+  padding: 40px 24px;
+}
+
+.board-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.board-header h2 {
+  font-family: var(--mono);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.board-header .btn-ghost { width: auto; padding: 8px 16px; font-size: 0.85rem; }
+
+.board-list { display: flex; flex-direction: column; gap: 8px; }
+
+.board-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.board-rank  { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+.board-name  { font-weight: 500; font-size: 0.95rem; }
+.board-word  { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); text-transform: uppercase; }
+.board-score { font-family: var(--mono); font-size: 1rem; font-weight: 500; }
+
+.board-empty { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 40px 0; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+    padding: 24px 16px;
+    gap: 24px;
+  }
+  .gallows-panel { flex-direction: row; align-items: center; gap: 20px; }
+  #hangman-svg   { max-width: 120px; }
+  .center-card   { padding: 36px 24px; }
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hangman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ── SCREEN: Start ─────────────────────────────────── -->
+  <div id="screen-start" class="screen active">
+    <div class="center-card">
+      <div class="logo-mark">◻</div>
+      <h1>Hangman</h1>
+      <p class="subtitle">Guess the word before time runs out.</p>
+      <button id="btn-start" class="btn-primary">New Game</button>
+      <button id="btn-to-board" class="btn-ghost">Leaderboard →</button>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: Game ──────────────────────────────────── -->
+  <div id="screen-game" class="screen">
+    <div class="game-layout">
+
+      <!-- Left: Gallows -->
+      <div class="gallows-panel">
+        <svg id="hangman-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <!-- Structure (always visible) -->
+          <line x1="20" y1="210" x2="180" y2="210" class="svg-line structure"/>
+          <line x1="60" y1="210" x2="60" y2="20"  class="svg-line structure"/>
+          <line x1="60" y1="20"  x2="130" y2="20"  class="svg-line structure"/>
+          <line x1="130" y1="20" x2="130" y2="45"  class="svg-line structure"/>
+          <!-- Parts (shown on wrong guesses) -->
+          <circle cx="130" cy="60" r="15" class="svg-part" id="part-head" />
+          <line x1="130" y1="75" x2="130" y2="130" class="svg-line svg-part" id="part-body"/>
+          <line x1="130" y1="90" x2="105" y2="115" class="svg-line svg-part" id="part-arm-l"/>
+          <line x1="130" y1="90" x2="155" y2="115" class="svg-line svg-part" id="part-arm-r"/>
+          <line x1="130" y1="130" x2="105" y2="165" class="svg-line svg-part" id="part-leg-l"/>
+          <line x1="130" y1="130" x2="155" y2="165" class="svg-line svg-part" id="part-leg-r"/>
+        </svg>
+        <div id="attempts-label" class="attempts-label">6 attempts left</div>
+      </div>
+
+      <!-- Right: Word + Keyboard -->
+      <div class="word-panel">
+        <div id="wrong-letters" class="wrong-letters"></div>
+        <div id="word-display" class="word-display"></div>
+
+        <div id="keyboard" class="keyboard"></div>
+
+        <div id="msg-area" class="msg-area hidden"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SCREEN: Result ────────────────────────────────── -->
+  <div id="screen-result" class="screen">
+    <div class="center-card">
+      <div id="result-icon" class="result-icon"></div>
+      <h2 id="result-title"></h2>
+      <p id="result-word" class="result-word"></p>
+      <div id="result-score" class="score-badge hidden"></div>
+
+      <div id="save-score-form" class="save-form hidden">
+        <input id="username-input" type="text" placeholder="Enter your name" maxlength="20" autocomplete="off" />
+        <button id="btn-save" class="btn-primary">Save Score</button>
+      </div>
+      <div id="save-confirmation" class="save-confirmation hidden"></div>
+
+      <div class="result-actions">
+        <button id="btn-play-again" class="btn-primary">Play Again</button>
+        <button id="btn-to-board-result" class="btn-ghost">Leaderboard →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: Leaderboard ───────────────────────────── -->
+  <div id="screen-board" class="screen">
+    <div class="board-layout">
+      <div class="board-header">
+        <h2>Leaderboard</h2>
+        <button id="btn-back" class="btn-ghost">← Back</button>
+      </div>
+      <div id="board-list" class="board-list"></div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
